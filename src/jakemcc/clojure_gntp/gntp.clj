@@ -10,7 +10,9 @@
 (def ^:private default-settings {:server "localhost"
                                  :port 23053
                                  :appname "clojure-gntp"
-                                 :password nil})
+                                 :password nil
+                                 :app "clojure-gntp"
+                                 :notification "clojure-gntp-notify"})
 
 (defmulti serialize-value type)
 (defmethod serialize-value :default [x] (str x))
@@ -36,39 +38,38 @@
 (defn- read-all [in]
   (slurp in))
 
-(defn register [out in app]
+(defn register [app out in]
   (send-message out
                 (list* (main-header "REGISTER")
                        (application-name (:app  app))
                        (header "Notifications-Count" 1)
                        ""
                        (header "Notification-Name" (:notification app))
-                       (header "Notification-Display-Name" "foo")
                        (header "Notification-Enabled" true)
                        ""
                        (ending)))
   (read-all in)
   nil)
 
-(defn notify [out in app]
+(defn notify [app message out in]
   (send-message out
                 (list* (main-header "NOTIFY")
                        (application-name (:app app))
                        (header "Notification-Name" (:notification app))
                        (header "Notification-Title" "Test")
-                       (header "Notification-Text" "message")
+                       (header "Notification-Text" message)
                        (ending)))
   (read-all in)
   nil)
 
-(defn with-socket [function app]
+(defn with-socket [f]
   (with-open [socket (Socket. (:server default-settings)
                               (:port default-settings))
               out (PrintWriter. (.getOutputStream socket) true)
               in (BufferedReader. (InputStreamReader. (.getInputStream socket)))]
-    (function out in app)))
+    (f out in)))
 
-(defn message []
-  (let [app {:app "clojure-gntp" :notification "clojure-gntp-notify"}]
-    (with-socket register app)
-    (with-socket notify app)))
+(defn message [message & options]
+  (let [app (merge default-settings (apply hash-map options))]
+    (with-socket (partial register app))
+    (with-socket (partial notify app message))))
