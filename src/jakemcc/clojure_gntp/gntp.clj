@@ -2,7 +2,6 @@
   (:import [java.net Socket]
            [java.io PrintWriter InputStreamReader BufferedReader]))
 
-
 (def version "1.0")
 (def encryption "NONE")
 (def separator "\r\n")
@@ -12,6 +11,7 @@
                                  :appname "clojure-gntp"
                                  :password nil
                                  :app "clojure-gntp"
+                                 :title "clojure-gntp"
                                  :notification "clojure-gntp-notify"})
 
 (defmulti serialize-value type)
@@ -56,7 +56,7 @@
                 (list* (main-header "NOTIFY")
                        (application-name (:app app))
                        (header "Notification-Name" (:notification app))
-                       (header "Notification-Title" "Test")
+                       (header "Notification-Title" (:title app))
                        (header "Notification-Text" message)
                        (ending)))
   (read-all in)
