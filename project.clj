@@ -1,4 +1,4 @@
-(defproject jakemcc/clojure-gntp "0.1.1-SNAPSHOT"
+(defproject jakemcc/clojure-gntp "0.1.1"
   :description "Implementation of Growl GNTP"
   :url "https://github.com/jakemcc/clojure-gntp"
   :license {:name "Eclipse Public License"
