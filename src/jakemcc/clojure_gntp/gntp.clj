@@ -17,7 +17,7 @@
 (defmethod serialize-value :default [x] (str x))
 (defmethod serialize-value java.lang.Boolean [x] (if x "True" "False"))
 
-(defn- header [name value]
+(defn header [name value]
   (str name ": " (serialize-value value)))
 
 (defn- main-header [type]
