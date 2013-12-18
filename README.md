@@ -21,3 +21,7 @@ and under Ubuntu to [Growl for Linux](http://mattn.github.com/growl-for-linux/).
 Copyright © 2012 [Jake McCrary](http://jakemccrary.com)
 
 Distributed under the Eclipse Public License, the same as Clojure.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jakemcc/clojure-gntp/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
